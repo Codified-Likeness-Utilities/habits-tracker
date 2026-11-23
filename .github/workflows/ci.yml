@@ -29,10 +29,7 @@ jobs:
         run: npm run build
         env:
           BASE_PATH: /${{ github.event.repository.name }}/
-          # La clé "anon" est publique par nature (protégée par la RLS) ;
-          # on la stocke en variable de dépôt plutôt qu'en secret.
-          VITE_SUPABASE_URL: ${{ vars.SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ vars.SUPABASE_ANON_KEY }}
+          # URL et clé publishable Supabase : voir .env.production.
       - uses: actions/upload-pages-artifact@v3
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         with:

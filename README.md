@@ -16,42 +16,37 @@ npm run dev        # mode démo si .env.local est absent
 npm test
 ```
 
-Pour utiliser Supabase en local, copiez `.env.example` en `.env.local` et renseignez l’URL et la clé `anon`.
+`npm run dev` démarre en mode démo ; pour viser le vrai projet en local, copiez `.env.production` en `.env.local`.
 
-## Mise en place de Supabase
+## Supabase
 
-1. Créez un projet sur [supabase.com](https://supabase.com).
-2. Appliquez le schéma `supabase/migrations/20261123000000_init.sql` :
-   soit en le collant dans **SQL Editor**, soit via la CLI (`supabase link` puis `supabase db push`),
-   soit automatiquement par la CI (voir plus bas).
-3. **Authentication → URL Configuration** :
-   - *Site URL* : `https://<utilisateur>.github.io/habits-tracker/`
-   - *Redirect URLs* : ajoutez la même URL, plus `http://localhost:5173/` pour le dev.
-4. **Authentication → Providers → Email** : laissez activé (lien magique).
+Projet : **habits-tracker** (`pvtsxoqrsqoywgrpwchx`, région Paris).
+Le schéma (`supabase/migrations/`) est appliqué et la RLS a été vérifiée.
+
+L’URL du projet et la clé *publishable* sont dans `.env.production` (utilisé par `npm run build`).
+Cette clé est publique par conception : la sécurité repose sur les politiques RLS.
+**Ne mettez jamais la clé secrète / `service_role` dans le front.**
+
+Réglages à faire dans le tableau de bord (**Authentication → URL Configuration**) :
+
+- *Site URL* : `https://romualdnave.github.io/habits-tracker/`
+- *Redirect URLs* : la même URL, plus `http://localhost:5173/` pour le dev.
 
 > La connexion utilise le flux PKCE : ouvrez le lien magique dans le même navigateur que celui
-> qui a demandé l’e-mail.
+> qui a demandé l’e-mail. L’envoi d’e-mails par défaut de Supabase est limité à quelques
+> messages par heure ; configurez un SMTP (Authentication → Emails) pour un usage plus large.
 
 ## Déploiement GitHub Pages
 
 1. **Settings → Pages → Source** : choisissez **GitHub Actions**.
-2. **Settings → Secrets and variables → Actions → Variables**, ajoutez :
-
-   | Variable              | Valeur                                    |
-   | --------------------- | ----------------------------------------- |
-   | `SUPABASE_URL`        | `https://xxxx.supabase.co`                |
-   | `SUPABASE_ANON_KEY`   | clé `anon` / *publishable* du projet      |
-
-   La clé `anon` est publique par conception : la sécurité repose sur les politiques RLS.
-   **N’utilisez jamais la clé `service_role` côté front.**
-3. Poussez sur `main` : le workflow `CI & déploiement` construit et publie le site.
+2. Poussez sur `main` : le workflow `CI & déploiement` vérifie, construit et publie le site.
 
 ### Migrations automatiques (optionnel)
 
-Le workflow `Migrations Supabase` applique `supabase/migrations/*` à chaque push sur `main`
-qui les modifie. Il est inactif tant que ces réglages ne sont pas présents :
+Le workflow `Migrations Supabase` applique les nouveaux fichiers de `supabase/migrations/` à chaque
+push sur `main` qui les modifie. Il reste inactif tant que ces réglages ne sont pas présents :
 
-- variable `SUPABASE_PROJECT_REF` (l’identifiant du projet, visible dans son URL) ;
+- variable de dépôt `SUPABASE_PROJECT_REF` = `pvtsxoqrsqoywgrpwchx` ;
 - secrets `SUPABASE_ACCESS_TOKEN` (*Account → Access Tokens*) et `SUPABASE_DB_PASSWORD`.
 
 ## Modèle de données
