@@ -29,7 +29,7 @@ Cette clé est publique par conception : la sécurité repose sur les politiques
 
 Réglages à faire dans le tableau de bord (**Authentication → URL Configuration**) :
 
-- *Site URL* : `https://romualdnave.github.io/habits-tracker/`
+- *Site URL* : `https://codified-likeness-utilities.github.io/habits-tracker/`
 - *Redirect URLs* : la même URL, plus `http://localhost:5173/` pour le dev.
 
 > La connexion utilise le flux PKCE : ouvrez le lien magique dans le même navigateur que celui
