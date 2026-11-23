@@ -1,0 +1,6 @@
+# Configuration minimale pour la CLI Supabase (supabase link / db push / start).
+project_id = "habits-tracker"
+
+[auth]
+site_url = "http://localhost:5173"
+additional_redirect_urls = ["http://localhost:5173/"]
